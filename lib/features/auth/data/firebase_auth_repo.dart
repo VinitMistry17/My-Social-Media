@@ -10,7 +10,7 @@ class FirebaseAuthRepo implements AuthRepo{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<AppUser?> signInWithEmailAndPassword(String email, String password) async {
+  Future<AppUser?> loginWithEmailAndPassword(String email, String password) async {
     try {
       //attempt login
       //UserCredential = a package with user info for ex. email, name, uid etc..
@@ -37,7 +37,7 @@ class FirebaseAuthRepo implements AuthRepo{
     }
   }
   @override
-  Future<AppUser?> signUpWithEmailAndPassword(String name, String email, String password) async {
+  Future<AppUser?> registerWithEmailAndPassword(String name, String email, String password) async {
     try {
       //attempt signup
       //UserCredential = a package with user info for ex. email, name, uid etc..
@@ -63,7 +63,7 @@ class FirebaseAuthRepo implements AuthRepo{
     }
   }
   @override
-  Future<void> signOut() async {
+  Future<void> logOut() async {
     await firebaseAuth.signOut();
   }
   @override
