@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_social_media/features/auth/presentation/pages/login_page.dart';
+import 'package:my_social_media/themes/light_theme.dart';
 
 import 'firebase_options.dart';
 
@@ -23,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Scaffold(),
+      theme: lightMode,
+      home: LoginPage(),
     );
   }
 }
