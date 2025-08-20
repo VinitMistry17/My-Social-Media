@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:my_social_media/features/auth/presentation/components/my_text_field.dart';
 
 import '../components/my_button.dart';
+import '../components/my_text_field.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? togglePages;
-  const LoginPage({
+  const RegisterPage({
     super.key,
     required this.togglePages,
   });
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text controller
   final emailController = TextEditingController();
   final pwController = TextEditingController();
+  final nameController = TextEditingController();
+  final confirmPwController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +38,29 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(height: 50,),
-                  //welcome back msg
+                  //create an account msg
                   Text(
-                      "Welcome back!, you've been missed!",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.primary,
-                    )
+                      "Let's create an account for you!",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
                   ),
 
                   //email text field
                   const SizedBox(height: 25,),
                   MyTextField(
-                      controller: emailController,
-                      hintText: "Enter your email",
-                      obscureText: false,
+                    controller: emailController,
+                    hintText: "Enter your email",
+                    obscureText: false,
+                  ),
+                  const SizedBox(height: 10,),
+
+                  //name text field
+                  MyTextField(
+                    controller: nameController,
+                    hintText: "Enter your name",
+                    obscureText: false,
                   ),
                   const SizedBox(height: 10,),
 
@@ -60,20 +70,29 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: "Enter your password",
                     obscureText: true,
                   ),
+                  const SizedBox(height: 10,),
+
+                  //confirm pw text field
+                  MyTextField(
+                    controller: confirmPwController,
+                    hintText: "Enter confirm password",
+                    obscureText: true,
+                  ),
                   const SizedBox(height: 25,),
 
-                  //login button
+                  //Register button
                   MyButton(
                     onTap: () {},
-                    text: "Login",
+                    text: "Register",
                   ),
                   const SizedBox(height: 50,),
-                  //not a member ? register now
+
+                  //Already a member ? Login now
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          "Not a member? ",
+                        "Already a member ? ",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -81,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: widget.togglePages ,
                         child: Text(
-                          "Register now",
+                          "Login now",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.inversePrimary,
                             fontWeight: FontWeight.bold,
