@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_social_media/features/auth/domain/repos/auth_repo.dart';
 
@@ -8,6 +9,7 @@ class FirebaseAuthRepo implements AuthRepo{
   //FirebaseAuth's single instance, used for login/logout/current user
   //FirebaseAuth = Firebase ka ready-made service hai jo login/logout ka kaam karta hai.
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   Future<AppUser?> loginWithEmailAndPassword(String email, String password) async {
@@ -28,7 +30,6 @@ class FirebaseAuthRepo implements AuthRepo{
         email: email,
         name: '',
       );
-
       //return user
       return user;
     }
@@ -55,6 +56,11 @@ class FirebaseAuthRepo implements AuthRepo{
         email: email,
         name: name,
       );
+      //save user data in firestore
+      await firebaseFirestore
+          .collection('users')
+          .doc(user.uid)
+          .set(user.toJson());
       //return user
       return user;
     }

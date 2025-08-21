@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../components/my_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,15 +17,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              BlocProvider.of<AuthCubit>(context).logout();
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
       ),
+      drawer: MyDrawer(),
     );
   }
 }

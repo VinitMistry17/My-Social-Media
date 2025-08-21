@@ -6,7 +6,7 @@ import 'package:my_social_media/themes/light_theme.dart';
 
 import 'features/auth/presentation/cubit/auth_states.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
-import 'features/post/presentation/pages/home_page.dart';
+import 'features/home/presentation/pages/home_page.dart';
 
 /*
 App = Root Level
@@ -17,7 +17,7 @@ Repositories: for the database
 Bloc provider for the state management:
 - auth
 - profile
-- post
+- home
 - search
 - theme
 
