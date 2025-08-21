@@ -8,7 +8,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
   AppUser? _currentUser;
 
-  AuthCubit(this.authRepo) : super(AuthInitial());
+  AuthCubit({required this.authRepo}) : super(AuthInitial());
 
   //check if user is already authenticated
   void checkAuth() async {
@@ -24,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
   AppUser? get currentUser => _currentUser;
 
   //login with email & password
-  Future<void> signIn(String email, String pw) async {
+  Future<void> login(String email, String pw) async {
     try {
       emit(AuthLoading());
       final AppUser? user = await authRepo.loginWithEmailAndPassword(email, pw);

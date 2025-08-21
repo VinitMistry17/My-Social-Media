@@ -19,7 +19,8 @@ class FirebaseAuthRepo implements AuthRepo{
           email: email,
           password: password
       );
-
+      //humne already user ko define kiya hai , firebase me jo user hota hai wo thoda complex hota hau
+      //so that we created AppUser class jisme data simplifier hoke aata hai..
       //create user
       AppUser user = AppUser(
         uid: userCredential.user!.uid,
@@ -64,11 +65,13 @@ class FirebaseAuthRepo implements AuthRepo{
   }
   @override
   Future<void> logOut() async {
+    //signOut = firebase's ready made service
     await firebaseAuth.signOut();
   }
   @override
   Future<AppUser?> getCurrentUser() async {
     //get current logged in user from firebase
+    //currentUser = firebase's ready made service
     final firebaseUser = firebaseAuth.currentUser;
 
     //if no user logged in

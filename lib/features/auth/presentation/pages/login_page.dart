@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_social_media/features/auth/presentation/components/my_text_field.dart';
 
 import '../components/my_button.dart';
+import '../cubit/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? togglePages;
@@ -18,6 +20,36 @@ class _LoginPageState extends State<LoginPage> {
   //text controller
   final emailController = TextEditingController();
   final pwController = TextEditingController();
+
+  //login button press
+  void login() {
+    final String email = emailController.text;
+    final String pw = pwController.text;
+
+    //auth cubit
+    final authCubit = context.read<AuthCubit>();
+
+    //ensure that the email and pw files are not empty
+    if (email.isNotEmpty && pw.isNotEmpty) {
+      //.login , cubit wale login ko call karega , jo auth_cubit.dart me hai
+      authCubit.login(email, pw);
+    }
+
+    //display errors if some fields are empty..
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter both email and password"),
+        ),
+      );
+    }
+  }
+  @override
+  void dispose() {
+    emailController.dispose();
+    pwController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   //login button
                   MyButton(
-                    onTap: () {},
+                    onTap: login,
                     text: "Login",
                   ),
                   const SizedBox(height: 50,),

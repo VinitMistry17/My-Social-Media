@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../components/my_button.dart';
 import '../components/my_text_field.dart';
+import '../cubit/auth_cubit.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? togglePages;
@@ -15,21 +17,52 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  //text controller
+  //text controllers
   final emailController = TextEditingController();
   final pwController = TextEditingController();
   final nameController = TextEditingController();
   final confirmPwController = TextEditingController();
 
+  void register() {
+    final String email = emailController.text;
+    final String pw = pwController.text;
+    final String name = nameController.text;
+    final String confirmPw = confirmPwController.text;
+
+    final authCubit = context.read<AuthCubit>();
+
+    if (email.isNotEmpty && pw.isNotEmpty && name.isNotEmpty && confirmPw.isNotEmpty) {
+      if (pw == confirmPw) {
+        authCubit.register(name, email, pw);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Passwords don't match"),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    pwController.dispose();
+    confirmPwController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Center(
+        child: Center(   // 👈 ab center ho gaya
+          child: SingleChildScrollView(   // 👈 scroll bhi milega small screens ke liye
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center, // 👈 login page jaisa
                 children: [
                   //logo
                   Icon(
@@ -38,25 +71,18 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(height: 50,),
-                  //create an account msg
+
+                  //create account msg
                   Text(
-                      "Let's create an account for you!",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
+                    "Let's create an account for you!",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-
-                  //email text field
                   const SizedBox(height: 25,),
-                  MyTextField(
-                    controller: emailController,
-                    hintText: "Enter your email",
-                    obscureText: false,
-                  ),
-                  const SizedBox(height: 10,),
 
-                  //name text field
+                  //name field
                   MyTextField(
                     controller: nameController,
                     hintText: "Enter your name",
@@ -64,7 +90,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 10,),
 
-                  //pw text field
+                  //email field
+                  MyTextField(
+                    controller: emailController,
+                    hintText: "Enter your email",
+                    obscureText: false,
+                  ),
+                  const SizedBox(height: 10,),
+
+                  //password
                   MyTextField(
                     controller: pwController,
                     hintText: "Enter your password",
@@ -72,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 10,),
 
-                  //confirm pw text field
+                  //confirm pw
                   MyTextField(
                     controller: confirmPwController,
                     hintText: "Enter confirm password",
@@ -80,9 +114,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 25,),
 
-                  //Register button
+                  //register button
                   MyButton(
-                    onTap: () {},
+                    onTap: register,
                     text: "Register",
                   ),
                   const SizedBox(height: 50,),
@@ -92,13 +126,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Already a member ? ",
+                        "Already a member? ",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       GestureDetector(
-                        onTap: widget.togglePages ,
+                        onTap: widget.togglePages,
                         child: Text(
                           "Login now",
                           style: TextStyle(
@@ -112,7 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-          )
+          ),
+        ),
       ),
     );
   }
