@@ -7,6 +7,8 @@ import 'package:my_social_media/themes/light_theme.dart';
 import 'features/auth/presentation/cubit/auth_states.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/profile/data/firebase_profile_repo.dart';
+import 'features/profile/presentation/cubits/profile_cubit.dart';
 
 /*
 App = Root Level
@@ -28,51 +30,66 @@ check auth state:
 * */
 
 class MyApp extends StatelessWidget {
+  //auth repo
   final authRepo = FirebaseAuthRepo();
+
+  //profile repo
+  final profileRepo = FirebaseProfileRepo();
+
   MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AuthCubit(authRepo : authRepo)..checkAuth(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: lightMode,
-        //BlocConsumer = listen states
-        home: BlocConsumer<AuthCubit, AuthState>(
-          builder: (context, authState) {
-            print(authState);
-            //unauthenticated -> auth page (login/register)
-            if (authState is Unauthenticated) {
-              return const AuthPage();
-            }
-            //authenticated -> go to home page
-            if (authState is Authenticated) {
-              return const HomePage();
-            }
+     return MultiBlocProvider(
+         providers: [
+           //auth cubit
+           BlocProvider(
+             create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+           ),
 
-            //loading -> show loading screen
-            else{
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          }, listener: (context, state) {
-            //error -> show error message
-            if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                )
-              );
-            }
-          },
-        )
-      ),
-    );
+           //profile cubit
+           BlocProvider(
+             create: (context) => ProfileCubit(profileRepo: profileRepo),
+           ),
+         ],
+         child: MaterialApp(
+             debugShowCheckedModeBanner: false,
+             title: 'Flutter Demo',
+             theme: lightMode,
+             //BlocConsumer = listen states
+             home: BlocConsumer<AuthCubit, AuthState>(
+               builder: (context, authState) {
+                 print(authState);
+                 //unauthenticated -> auth page (login/register)
+                 if (authState is Unauthenticated) {
+                   return const AuthPage();
+                 }
+                 //authenticated -> go to home page
+                 if (authState is Authenticated) {
+                   return const HomePage();
+                 }
+
+                 //loading -> show loading screen
+                 else{
+                   return const Scaffold(
+                     body: Center(
+                       child: CircularProgressIndicator(),
+                     ),
+                   );
+                 }
+               }, listener: (context, state) {
+               //error -> show error message
+               if (state is AuthError) {
+                 ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                       content: Text(state.message),
+                     )
+                 );
+               }
+             },
+             )
+         ),
+     );
   }
 }
