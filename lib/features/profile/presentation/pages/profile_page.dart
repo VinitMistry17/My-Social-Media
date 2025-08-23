@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_social_media/features/profile/presentation/components/bio_box.dart';
@@ -70,25 +71,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 25,),
                 //profile pic
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            CachedNetworkImage(
+              imageUrl: user.profileImageUrl,
+              //loading..
+              placeholder: (context, url) => const CircularProgressIndicator(),
+
+              //error failed to load
+              errorWidget: (context, url, error) => Icon(
+                Icons.error,
+                size: 72,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+
+              //loaded
+              imageBuilder: (context, imageProvider) =>
+                  Container(
                     height: 120,
                     width: 120,
-                    padding: const EdgeInsets.all(25),
-                    child: Center(
-                      child: Icon(
-                        Icons.person,
-                        size: 72,
-                        color: Theme.of(context).colorScheme.primary,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: imageProvider,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                ),
+            ),
                 const SizedBox(height: 25,),
                 //bio
                 Padding(

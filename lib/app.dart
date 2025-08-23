@@ -9,6 +9,7 @@ import 'features/auth/presentation/pages/auth_page.dart';
 import 'features/home/presentation/pages/home_page.dart';
 import 'features/profile/data/firebase_profile_repo.dart';
 import 'features/profile/presentation/cubits/profile_cubit.dart';
+import 'features/storage/data/cloudinary_storage_repo.dart';
 
 /*
 App = Root Level
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
   //profile repo
   final profileRepo = FirebaseProfileRepo();
 
+  //storage repo
+  final storageRepo = CloudinaryStorageRepo();
+
   MyApp({super.key});
 
   // This widget is the root of your application.
@@ -50,7 +54,8 @@ class MyApp extends StatelessWidget {
 
            //profile cubit
            BlocProvider(
-             create: (context) => ProfileCubit(profileRepo: profileRepo),
+             create: (context) => ProfileCubit(
+                 storageRepo: storageRepo,profileRepo: profileRepo),
            ),
          ],
          child: MaterialApp(

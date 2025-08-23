@@ -1,6 +1,6 @@
 import 'package:my_social_media/features/auth/domain/entities/app_user.dart';
 
-class ProfileUser extends AppUser{
+class ProfileUser extends AppUser {
   final String bio;
   final String profileImageUrl;
 
@@ -12,8 +12,12 @@ class ProfileUser extends AppUser{
     required this.profileImageUrl,
   });
 
-  //method to update profile user
-  ProfileUser copyWith({String? newBio, String? newProfileImageUrl}){
+  // Fixed: removed unnecessary 'required String newProfilePicture' parameter
+  // Now copyWith works correctly without forcing extra arg
+  ProfileUser copyWith({
+    String? newBio,
+    String? newProfileImageUrl,
+  }) {
     return ProfileUser(
       uid: uid,
       email: email,
@@ -23,8 +27,8 @@ class ProfileUser extends AppUser{
     );
   }
 
-  //convert profile user -> json
-  Map<String, dynamic> toJson(){
+  // convert profile user -> json
+  Map<String, dynamic> toJson() {
     return {
       'uid': uid,
       'email': email,
@@ -34,8 +38,8 @@ class ProfileUser extends AppUser{
     };
   }
 
-  //convert json -> profile user
-  factory ProfileUser.fromJson(Map<String, dynamic> json){
+  // convert json -> profile user
+  factory ProfileUser.fromJson(Map<String, dynamic> json) {
     return ProfileUser(
       uid: json['uid'],
       email: json['email'],
