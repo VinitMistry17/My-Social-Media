@@ -24,13 +24,13 @@ class PostCubit extends Cubit<PostState>{
    try{
      if(imagePath != null){
        emit(PostsUploading());
-       imageUrl = await storageRepo.uploadProfileImageMobile(imagePath, post.id);
+       imageUrl = await storageRepo.uploadPostImageMobile(imagePath, post.id);
      }
 
      //handle image upload for web platform (using bytes)
      else if(imageBytes != null){
        emit(PostsUploading());
-       imageUrl = await storageRepo.uploadProfileImageWeb(imageBytes, post.id);
+       imageUrl = await storageRepo.uploadPostImageWeb(imageBytes, post.id);
      }
 
      //give image url to post
@@ -38,6 +38,9 @@ class PostCubit extends Cubit<PostState>{
 
      //create post in the backend
      await postRepo.createPost(newPost);
+
+     //re-fetch all posts
+     fetchAllPosts();
    } catch(e){
      emit(PostsError("Failed to fetch post: $e"));
    }

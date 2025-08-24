@@ -21,6 +21,12 @@ class FirebaseAuthRepo implements AuthRepo{
           email: email,
           password: password
       );
+      //fetch user document from firebase
+      DocumentSnapshot userDoc = await firebaseFirestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+
       //humne already user ko define kiya hai , firebase me jo user hota hai wo thoda complex hota hau
       //so that we created AppUser class jisme data simplifier hoke aata hai..
       //create user
@@ -28,7 +34,7 @@ class FirebaseAuthRepo implements AuthRepo{
         uid: userCredential.user!.uid,
         // ! = trust me user is logged in and that's why its not a null
         email: email,
-        name: '',
+        name: userDoc['name'],
       );
       //return user
       return user;
@@ -74,6 +80,8 @@ class FirebaseAuthRepo implements AuthRepo{
     //signOut = firebase's ready made service
     await firebaseAuth.signOut();
   }
+
+  //get current user
   @override
   Future<AppUser?> getCurrentUser() async {
     //get current logged in user from firebase
@@ -84,11 +92,22 @@ class FirebaseAuthRepo implements AuthRepo{
     if (firebaseUser == null) {
       return null;
     }
+
+    //fetch user document from firebase
+    DocumentSnapshot userDoc = await firebaseFirestore
+        .collection('users')
+        .doc(firebaseUser.uid)
+        .get();
+    //check if user doc exists
+    if (!userDoc.exists) {
+      return null;
+    }
+
     //if user logged in
     return AppUser(
       uid: firebaseUser.uid,
       email: firebaseUser.email!,
-      name: '',
+      name: userDoc['name'],
     );
   }
 }

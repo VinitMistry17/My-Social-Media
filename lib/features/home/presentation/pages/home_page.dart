@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../post/domain/entities/post.dart';
+import '../../../post/presentation/cubits/post_cubit.dart';
+import '../../../post/presentation/cubits/post_states.dart';
+import '../../../post/presentation/pages/upload_post_page.dart';
 import '../components/my_drawer.dart';
+import '../components/post_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,13 +18,101 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Get postCubit from context
+  late final postCubit = context.read<PostCubit>();
+
+  // On widget start
+  @override
+  void initState() {
+    super.initState();
+
+    // fetch posts from firebase
+    fetchAllPosts();
+  }
+
+  // function to fetch all posts
+  void fetchAllPosts() async {
+    await postCubit.fetchAllPosts();
+  }
+
+  // function to delete a post
+  void deletePost(String postId) async {
+    await postCubit.deletePost(postId);
+    fetchAllPosts(); // refresh list after delete
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        title: const Text("Home"),
+        actions: [
+          // upload new post button (+)
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const UploadPostPage()),
+            ),
+            icon: const Icon(Icons.add, size: 40),
+          ),
+        ],
       ),
-      drawer: MyDrawer(),
+
+      // Drawer (side menu)
+      drawer: const MyDrawer(),
+
+      // BODY with BlocBuilder
+      body: BlocBuilder<PostCubit, PostState>(
+        builder: (context, state) {
+          // default empty list of posts
+          List<Post> allPosts = [];
+
+          // ---------------- STATE HANDLING ----------------
+
+          // loading OR uploading state
+          if (state is PostsLoading || state is PostsUploading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          // posts loaded
+          else if (state is PostsLoaded) {
+            allPosts = state.posts;
+
+            if (allPosts.isEmpty) {
+              return const Center(
+                child: Text("No posts found"),
+              );
+            }
+          }
+
+          // error state
+          else if (state is PostsError) {
+            return Center(
+              child: Text(state.message),
+            );
+          }else {
+            return const SizedBox();
+          }
+
+          // ------------------------------------------------
+
+          // show all posts in ListView
+          return ListView.builder(
+            itemCount: allPosts.length,
+            itemBuilder: (context, index) {
+              final post = allPosts[index];
+
+              return PostTile(
+                  post: post,
+                onDeletePressed: () =>  deletePost(post.id),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

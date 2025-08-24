@@ -9,6 +9,10 @@ class CloudinaryStorageRepo extends StorageRepo {
   final String cloudName = "dimcsqgzr"; // from Cloudinary dashboard
   final String uploadPreset = "my_preset"; // from Cloudinary
 
+  /*
+  PROFILE PICTURE - upload image to storage
+   */
+
   // mobile platform
   @override
   Future<String?> uploadProfileImageMobile(String path, String fileName) async {
@@ -20,6 +24,22 @@ class CloudinaryStorageRepo extends StorageRepo {
   @override
   Future<String?> uploadProfileImageWeb(Uint8List fileBytes, String fileName) async {
     return _uploadFileBytes(fileBytes, fileName, 'profile_images');
+  }
+
+  /*
+    POST IMAGE - upload image to storage
+   */
+
+  @override
+  Future<String?> uploadPostImageMobile(String path, String fileName) async {
+    final file = File(path);
+    return _uploadFile(file, fileName, 'post_images');
+
+  }
+
+  @override
+  Future<String?> uploadPostImageWeb(Uint8List fileBytes, String fileName) async {
+    return _uploadFileBytes(fileBytes, fileName, 'post_images');
   }
 
   // helper method for mobile (file)
