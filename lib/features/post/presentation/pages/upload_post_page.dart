@@ -13,6 +13,8 @@ import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../domain/entities/post.dart';
 import '../cubits/post_states.dart';
 import '../cubits/post_cubit.dart';
+// ✅ Import ProfileCubit to be able to access it
+import 'package:my_social_media/features/profile/presentation/cubits/profile_cubit.dart';
 
 class UploadPostPage extends StatefulWidget {
   const UploadPostPage({super.key});
@@ -76,10 +78,14 @@ class _UploadPostPageState extends State<UploadPostPage> {
       imageUrl: '', // Cloudinary se baad me update hoga
       timestamp: DateTime.now(),
       likes: [],
+      comments: [],
     );
 
     //post cubit
     final postCubit = context.read<PostCubit>();
+
+    // ✅ Get ProfileCubit from context and pass it to createPost
+    final profileCubit = context.read<ProfileCubit>();
 
     //web upload
     if (kIsWeb) {
@@ -87,6 +93,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
         postCubit.createPost(
           newPost,
           imageBytes: imagePickedFile!.bytes,
+          profileCubit: profileCubit, // ✅ Pass ProfileCubit
         );
       }
     }
@@ -97,6 +104,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
         postCubit.createPost(
           newPost,
           imagePath: imagePickedFile!.path,
+          profileCubit: profileCubit, // ✅ Pass ProfileCubit
         );
       }
     }
@@ -152,18 +160,18 @@ class _UploadPostPageState extends State<UploadPostPage> {
             children: [
               //image preview for web
               if (kIsWeb && webImage != null) Image.memory(webImage!),
-        
+
               //image preview for mobile
               if (!kIsWeb && imagePickedFile?.path != null)
                 Image.file(File(imagePickedFile!.path!)),
-        
+
               //pick image button
               MaterialButton(
                 onPressed: pickImage,
                 color: Colors.blue,
                 child: const Text("Pick Image"),
               ),
-        
+
               //caption text Box
               MyTextField(
                 controller: textController,

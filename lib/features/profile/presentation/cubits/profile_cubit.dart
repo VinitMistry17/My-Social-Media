@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +23,8 @@ class ProfileCubit extends Cubit<ProfileState>{
       final user = await profileRepo.fetchUserProfile(uid);
 
       if (user != null) {
+        // ✅ The key change is to emit `ProfileLoaded` with the new user data.
+        // This will trigger a rebuild of any BlocBuilder listening to the ProfileCubit.
         emit(ProfileLoaded(user));
       }else {
         emit(ProfileError("User not found"));
@@ -87,6 +88,16 @@ class ProfileCubit extends Cubit<ProfileState>{
       await fetchUserProfile(uid);
     } catch(e){
       emit(ProfileError("Error updating profile: $e"));
+    }
+  }
+
+  //toggle follow/unfollow
+  Future<void> toggleFollow(String currentUserId, String targetUserId) async {
+    try{
+      await profileRepo.toggleFollow(currentUserId, targetUserId);
+    }
+    catch(e){
+      emit(ProfileError("Error toggling follow: $e"));
     }
   }
 }

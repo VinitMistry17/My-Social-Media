@@ -8,7 +8,9 @@ import '../../../post/presentation/cubits/post_cubit.dart';
 import '../../../post/presentation/cubits/post_states.dart';
 import '../../../post/presentation/pages/upload_post_page.dart';
 import '../components/my_drawer.dart';
-import '../components/post_tile.dart';
+import '../../../post/presentation/components/post_tile.dart';
+// ✅ Import ProfileCubit
+import 'package:my_social_media/features/profile/presentation/cubits/profile_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +22,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // Get postCubit from context
   late final postCubit = context.read<PostCubit>();
+  // ✅ Get ProfileCubit from context
+  late final profileCubit = context.read<ProfileCubit>();
+  // ✅ Get AuthCubit from context
+  late final authCubit = context.read<AuthCubit>();
+
 
   // On widget start
   @override
@@ -37,7 +44,8 @@ class _HomePageState extends State<HomePage> {
 
   // function to delete a post
   void deletePost(String postId) async {
-    await postCubit.deletePost(postId);
+    // ✅ Pass the current user's UID and ProfileCubit to the deletePost method
+    await postCubit.deletePost(postId, authCubit.currentUser!.uid, profileCubit);
     fetchAllPosts(); // refresh list after delete
   }
 
@@ -106,7 +114,7 @@ class _HomePageState extends State<HomePage> {
               final post = allPosts[index];
 
               return PostTile(
-                  post: post,
+                post: post,
                 onDeletePressed: () =>  deletePost(post.id),
               );
             },
