@@ -8,6 +8,7 @@ import 'package:my_social_media/features/auth/presentation/components/my_text_fi
 import 'package:my_social_media/features/profile/domain/entities/profile_user.dart';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:my_social_media/responsive/constrained_scaffold.dart';
 import '../cubits/profile_cubit.dart';
 import '../cubits/profile_states.dart';
 
@@ -78,7 +79,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       builder: (context, state) {
         //profile loading
         if(state is ProfileLoading){
-          return const Scaffold(
+          return const ConstrainedScaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

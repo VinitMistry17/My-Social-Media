@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../responsive/constrained_scaffold.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../post/domain/entities/post.dart';
 import '../../../post/presentation/cubits/post_cubit.dart';
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       appBar: AppBar(
         foregroundColor: Theme.of(context).colorScheme.primary,
         title: const Text("Home"),

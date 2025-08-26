@@ -8,7 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:my_social_media/features/profile/presentation/components/user_tile.dart';
 import 'package:my_social_media/features/profile/presentation/pages/profile_page.dart';
+import 'package:my_social_media/responsive/constrained_scaffold.dart';
 
 import '../cubits/profile_cubit.dart';
 
@@ -27,7 +29,7 @@ class FollowerPage extends StatelessWidget {
     // TAB CONTROLLER
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
+      child: ConstrainedScaffold(
         // App Bar
         appBar: AppBar(
           elevation: 2,
@@ -84,53 +86,21 @@ Widget _buildUserList(
       return FutureBuilder(
         future: context.read<ProfileCubit>().getUserProfile(uid),
         builder: (context, snapshot) {
-          // loading..
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const ListTile(
-              leading: CircleAvatar(child: Icon(Icons.person)),
-              title: Text("Loading..."),
-            );
+          //user loaded
+          if(snapshot.hasData){
+            final user = snapshot.data!;
+            return UserTile(user: user);
           }
 
-          // error / not found
-          if (snapshot.hasError ||
-              !snapshot.hasData ||
-              snapshot.data == null) {
-            return const ListTile(
-              leading: CircleAvatar(child: Icon(Icons.error)),
-              title: Text("User not found.."),
-            );
+          //loading
+          else if(snapshot.connectionState == ConnectionState.waiting){
+            return ListTile(title: Text("Loading..."));
           }
 
-          // user loaded
-          final user = snapshot.data!;
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(
-                user.profileImageUrl,
-              ),
-            ),
-            title: Text(
-              user.name,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
-              ),
-            ),
-            subtitle: Text(
-              user.email,
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey[600],
-              ),
-            ),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-
-            onTap: () => Navigator.push(
-                context,
-              MaterialPageRoute(builder: (context) => ProfilePage(uid: user.uid)),
-            )
-          );
+          //not found
+          else{
+            return ListTile(title: Text("User not found"));
+          }
         },
       );
     },

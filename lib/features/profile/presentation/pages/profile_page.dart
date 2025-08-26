@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_social_media/features/profile/presentation/components/bio_box.dart';
 import 'package:my_social_media/features/profile/presentation/components/follow_button.dart';
+import 'package:my_social_media/responsive/constrained_scaffold.dart';
 
 import '../../../auth/domain/entities/app_user.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
@@ -282,7 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         // loading
         else if (state is ProfileLoading) {
-          return const Scaffold(
+          return const ConstrainedScaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

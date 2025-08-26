@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../search/presentation/pages/search_page.dart';
+import '../../../settings/pages/settings_page.dart';
 import 'my_drawer_tile.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -73,14 +75,24 @@ class MyDrawer extends StatelessWidget {
                 MyDrawerTile(
                   title: "S E A R C H",
                   icon: Icons.search,
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchPage(),
+                    ),
+                  ),
                 ),
 
                 //settings tile
                 MyDrawerTile(
                   title: "S E T T I N G S",
                   icon: Icons.settings,
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsPage(),
+                    ),
+                  ),
                 ),
 
                 const Spacer(),

@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:my_social_media/features/auth/domain/entities/app_user.dart';
 import 'package:my_social_media/features/auth/presentation/components/my_text_field.dart';
+import 'package:my_social_media/responsive/constrained_scaffold.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../domain/entities/post.dart';
@@ -123,7 +124,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
       builder: (context, state) {
         //loading or uploading
         if (state is PostsLoading || state is PostsUploading) {
-          return const Scaffold(
+          return const ConstrainedScaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

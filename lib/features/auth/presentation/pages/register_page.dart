@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_social_media/responsive/constrained_scaffold.dart';
 
 import '../components/my_button.dart';
 import '../components/my_text_field.dart';
@@ -55,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       body: SafeArea(
         child: Center(   // 👈 ab center ho gaya
           child: SingleChildScrollView(   // 👈 scroll bhi milega small screens ke liye
