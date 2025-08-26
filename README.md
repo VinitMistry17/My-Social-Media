@@ -1,16 +1,19 @@
 # my_social_media
 
-A new Flutter project.
 
-## Getting Started
+A social media mobile app built with Flutter, Firebase, and Cloudinary, and BLoC state management 
 
-This project is a starting point for a Flutter application.
+It includes core social media features like authentication, posting, liking, and commenting.  
 
-A few resources to get you started if this is your first Flutter project:
+🚀 Features
+- Firebase Authentication (Sign Up / Login)  
+- Firestore Database for posts, likes & comments  
+- Cloudinary for image upload & storage  
+- BLoC for state management  
+- Responsive & modern UI  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🛠️ Tech Stack
+- Flutter & Dart  
+- Firebase (Auth + Firestore)  
+- Cloudinary ( for image storage )
+- BLoC  
