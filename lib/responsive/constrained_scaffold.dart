@@ -1,12 +1,3 @@
-/*
-
-    CONSTRAINED SCAFFOLD:
-
-    this is a normal scaffold but the width of the scaffold is constrained so that,
-    it behaves consistently on larger screen (particularly for the web browsers)
-
- */
-
 import 'package:flutter/material.dart';
 
 class ConstrainedScaffold extends StatelessWidget {
@@ -26,9 +17,11 @@ class ConstrainedScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       drawer: drawer,
-      body: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: body,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: body,
+        ),
       ),
     );
   }

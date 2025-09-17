@@ -93,196 +93,200 @@ class _ProfilePageState extends State<ProfilePage> {
           // ✅ A variable to hold the post count, updated inside the BlocBuilder
           int postCount = 0;
 
-          return Scaffold(
-            // Appbar
-            appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title: Text(
-                user.name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              actions: [
-                //edit profile button
-
-                if(isOwnPost)
-                  IconButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditProfilePage(user: user),
-                      ),
-                    ),
-                    icon: const Icon(Icons.settings),
-                  ),
-              ],
-            ),
-
-            // Body
-            body: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-                // profile pic
-                Center(
-                  child: CachedNetworkImage(
-                    imageUrl: user.profileImageUrl,
-                    // loading..
-                    placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                    // error failed to load
-                    errorWidget: (context, url, error) => Icon(
-                      Icons.error,
-                      size: 72,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    // loaded
-                    imageBuilder: (context, imageProvider) => Container(
-                      height: 120,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
+          // FIXED: Changed from 'child' to 'body' parameter for ConstrainedScaffold
+          return ConstrainedScaffold(
+            body: Scaffold(
+              // Appbar
+              appBar: AppBar(
+                elevation: 0,
+                centerTitle: true,
+                title: Text(
+                  user.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                actions: [
+                  //edit profile button
 
-                const SizedBox(height: 16),
-
-                // email (subtle look)
-                Center(
-                  child: Text(
-                    user.email,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                //profile status
-                BlocBuilder<PostCubit, PostState>(
-                  builder: (context, postState) {
-                    if (postState is PostsLoaded) {
-                      final userPosts = postState.posts.where((post) => post.userId == widget.uid).toList();
-                      postCount = userPosts.length;
-                    }
-                    return ProfileStatus(
-                      postCount: postCount,
-                      followerCount: user.followers.length,
-                      followingCount: user.following.length,
-                      onTap: () => Navigator.push(
+                  if(isOwnPost)
+                    IconButton(
+                      onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FollowerPage(
-                            followers: user.followers,
-                            following: user.following,
+                          builder: (context) => EditProfilePage(user: user),
+                        ),
+                      ),
+                      icon: const Icon(Icons.settings),
+                    ),
+                ],
+              ),
+
+              // Body
+              body: ListView(
+                padding: const EdgeInsets.all(20),
+                children: [
+                  // profile pic
+                  Center(
+                    child: CachedNetworkImage(
+                      imageUrl: user.profileImageUrl,
+                      // loading..
+                      placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                      // error failed to load
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        size: 72,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      // loaded
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
-
-
-                const SizedBox(height: 25),
-
-
-                //follow button
-                if(!isOwnPost)
-                  FollowButton(
-                    onPressed: followButtonPressed,
-                    isFollowing: user.followers.contains(currentUser!.uid),
+                    ),
                   ),
 
-                const SizedBox(height: 25),
+                  const SizedBox(height: 16),
 
-                // bio section
-                Text(
-                  "Bio",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.primary,
+                  // email (subtle look)
+                  Center(
+                    child: Text(
+                      user.email,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                BioBox(text: user.bio),
 
-                const SizedBox(height: 25),
+                  const SizedBox(height: 25),
 
-                // posts section
-                Text(
-                  "Posts",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.primary,
+                  //profile status
+                  BlocBuilder<PostCubit, PostState>(
+                    builder: (context, postState) {
+                      if (postState is PostsLoaded) {
+                        final userPosts = postState.posts.where((post) => post.userId == widget.uid).toList();
+                        postCount = userPosts.length;
+                      }
+                      return ProfileStatus(
+                        postCount: postCount,
+                        followerCount: user.followers.length,
+                        followingCount: user.following.length,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FollowerPage(
+                              followers: user.followers,
+                              following: user.following,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-                const SizedBox(height: 10),
 
-                // list of posts from this user
-                BlocBuilder<PostCubit, PostState>(
-                  builder: (context, state) {
-                    // post loaded..
-                    if (state is PostsLoaded) {
-                      final userPosts = state.posts
-                          .where((post) => post.userId == widget.uid)
-                          .toList();
 
-                      // ✅ postCount should be updated here to reflect the number of posts
-                      postCount = userPosts.length;
+                  const SizedBox(height: 25),
 
-                      return ListView.builder(
-                        itemCount: postCount,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          // get individual posts
-                          final post = userPosts[index];
 
-                          // return as post tile UI
-                          return PostTile(
-                            post: post,
-                            onDeletePressed: () {
-                              // ✅ Pass profileCubit and userId to the deletePost method
-                              context.read<PostCubit>().deletePost(
-                                  post.id,
-                                  post.userId,
-                                  context.read<ProfileCubit>()
-                              );
-                            },
-                          );
-                        },
-                      );
-                    }
+                  //follow button
+                  if(!isOwnPost)
+                    FollowButton(
+                      onPressed: followButtonPressed,
+                      isFollowing: user.followers.contains(currentUser!.uid),
+                    ),
 
-                    // post loading..
-                    else if (state is PostsLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text("No posts found.."),
-                      );
-                    }
-                  },
-                ),
-              ],
+                  const SizedBox(height: 25),
+
+                  // bio section
+                  Text(
+                    "Bio",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  BioBox(text: user.bio),
+
+                  const SizedBox(height: 25),
+
+                  // posts section
+                  Text(
+                    "Posts",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // list of posts from this user
+                  BlocBuilder<PostCubit, PostState>(
+                    builder: (context, state) {
+                      // post loaded..
+                      if (state is PostsLoaded) {
+                        final userPosts = state.posts
+                            .where((post) => post.userId == widget.uid)
+                            .toList();
+
+                        // ✅ postCount should be updated here to reflect the number of posts
+                        postCount = userPosts.length;
+
+                        return ListView.builder(
+                          itemCount: postCount,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            // get individual posts
+                            final post = userPosts[index];
+
+                            // return as post tile UI
+                            return PostTile(
+                              post: post,
+                              onDeletePressed: () {
+                                // ✅ Pass profileCubit and userId to the deletePost method
+                                context.read<PostCubit>().deletePost(
+                                    post.id,
+                                    post.userId,
+                                    context.read<ProfileCubit>()
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
+
+                      // post loading..
+                      else if (state is PostsLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text("No posts found.."),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         }
 
         // loading
         else if (state is ProfileLoading) {
+          // FIXED: Changed from 'child' to 'body' parameter for ConstrainedScaffold
           return const ConstrainedScaffold(
             body: Center(
               child: CircularProgressIndicator(),
