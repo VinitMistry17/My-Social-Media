@@ -12,4 +12,7 @@ A Social Media App Clone using Flutter + Firebase + BLoC state management
 This project helped me explore clean architecture, Firebase integration, and handling state with BLoC.
 Excited to keep building and open to feedback
 
+login page:
 ![image alt](loginPage.jpg)
+
+
