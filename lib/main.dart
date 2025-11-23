@@ -4,6 +4,8 @@ void main() {
   runApp(const MyApp());
 }
 
+//just practicing git/github
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
