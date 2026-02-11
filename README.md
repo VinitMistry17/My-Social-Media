@@ -1,16 +1,40 @@
 # my_social_media
 
-A new Flutter project.
+A Social Media App Clone using Flutter + Firebase + BLoC state management
 
-## Getting Started
+🔹 Features:
+- User Authentication
+- Create, Like & Comment on Posts
+- Image Upload with Cloudinary
+- Dark/Light Mode
+- State Management with BLoC
 
-This project is a starting point for a Flutter application.
+This project helped me explore clean architecture, Firebase integration, and handling state with BLoC.
+Excited to keep building and open to feedback
 
-A few resources to get you started if this is your first Flutter project:
+login page:
+![image alt](loginPage.jpg)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Home Pages:
+![image alt](HomePage1.jpg)
+![image alt](HomePage2.jpg)
+![image alt](HomePage3.jpg)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+create post page:
+![image alt](createPostPage.jpg)
+
+Profile pages:
+![image alt](profilePage1.jpg)
+![image alt](profilePage2.jpg)
+
+Edit profile page:
+![image alt](editProfilePage1.jpg)
+
+Drawer page:
+![image alt](MyDrawerPage.jpg)
+
+Search page:
+![image alt](searchPage.jpg)
+
+Settings page:
+![image alt](settingsPage.jpg)
