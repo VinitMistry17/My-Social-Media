@@ -13,4 +13,13 @@ This project helped me explore clean architecture, Firebase integration, and han
 Excited to keep building and open to feedback
 
 Light mode images of application:
+![image alt](social_login.jpg)
+![image alt](social_register.jpg)
+![image alt](social_home.jpg)
+![image alt](social_profile.jpg)
+![image alt](social_follow.jpg)
+![image alt](social_follow(1).jpg)
+![image alt](social_drawer.jpg)
+![image alt](social_home(1).jpg)
+![image alt](social_search.jpg)
 ![image alt](social_dark_mode.jpg)
