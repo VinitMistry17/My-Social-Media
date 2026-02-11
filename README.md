@@ -24,3 +24,13 @@ Light mode images of application:
 ![image alt](social_home(1).jpg)
 ![image alt](social_search.jpg)
 ![image alt](social_dark_mode.jpg)
+
+Dark Mode images of application:
+
+![image alt](login_dark.jpg)
+![image alt](register_dark.jpg)
+![image alt](home_dark.jpg)
+![image alt](drawer_dark.jpg)
+![image alt](profile_dark.jpg)
+![image alt](profile_dark(1).jpg)
+![image alt](search_dark.jpg)
