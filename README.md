@@ -13,6 +13,7 @@ This project helped me explore clean architecture, Firebase integration, and han
 Excited to keep building and open to feedback
 
 Light mode images of application:
+
 ![image alt](social_login.jpg)
 ![image alt](social_register.jpg)
 ![image alt](social_home.jpg)
